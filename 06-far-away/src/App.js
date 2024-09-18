@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 export default function App() {
   return (
     <>
@@ -15,70 +13,67 @@ const initialItems = [
   { id: 2, description: "Socks", quantity: 12, packed: true },
   { id: 3, description: "Charger", quantity: 1, packed: false },
 ];
+
 function Logo() {
-  return <h1>🏝️ Far Away</h1>;
+  return <h1>Far Away</h1>;
 }
 
 function Form() {
-  const arr = Array.from({ length: 20 }, (curr, index) => index + 1);
-  const [description, setDescription] = useState("");
-  const [quant, setQuant] = useState(0);
-  function handleChange(e) {
-    setDescription(e.target.value);
-  }
-  function handleSubmit(e) {
+  function handleEvent(e) {
     e.preventDefault();
+    alert(e.target.value);
+  }
+  function handleChange(e) {
+    console.log(e.target.value);
   }
   return (
-    <form className="add-form" onSubmit={handleSubmit}>
+    <form className="add-form" onSubmit={(e) => handleEvent(e)}>
       <h3>What do you need for your trip?</h3>
-      <select value={quant} onChange={(e) => setQuant(e.target.value)}>
-        {arr.map((option) => (
-          <option value={option} key={option}>
-            {option}
+      <input
+        placeholder="...item"
+        className="input"
+        onChange={handleChange}
+      ></input>
+      <select>
+        {Array.from({ length: 20 }, (_, index) => index + 1).map((elem) => (
+          <option value={elem} key={elem}>
+            {elem}
           </option>
         ))}
       </select>
-      <input
-        type="text"
-        placeholder="items..."
-        value={description}
-        onChange={handleChange}
-      ></input>
-      <button onClick={handleSubmit}>Add</button>
+      <button>Add</button>
     </form>
   );
 }
-
 function PackingList() {
   return (
     <div className="list">
       <ul>
-        {initialItems.map((item) => (
-          <Item item={item} key={item.id} />
+        {initialItems.map((iterator) => (
+          <Item props={iterator} key={iterator.id} />
         ))}
       </ul>
     </div>
   );
 }
-function Item({ item }) {
-  function handleButton() {
-    alert("Remove?");
-  }
+
+function Item({ props }) {
+  function handleClick() {}
   return (
-    <li>
-      <span style={item.packed ? { textDecoration: `line-through` } : {}}>
-        {item.quantity} {item.description}
-      </span>
-      <button onClick={handleButton}>❌</button>
-    </li>
+    <>
+      <li>
+        <span style={props.packed ? { textDecoration: `line-through` } : {}}>
+          {props.quantity} {props.description}
+        </span>
+        <button onClick={handleClick}>❌</button>
+      </li>
+    </>
   );
 }
-
 function Stats() {
   return (
     <footer className="stats">
-      <em>You have added X items in your list, and you already packed X</em>
+      <p>You have added X items to you List</p>
     </footer>
   );
 }
